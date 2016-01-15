@@ -1,0 +1,6 @@
+Debug/
+Release/
+UnitTest/
+.cproject
+.project
+.settings
