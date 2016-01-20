@@ -4,8 +4,39 @@
 
 #include <string>
 #include <vector>
+#include <map>
+#include <iostream>
 
 namespace difflib{
+
+    struct Match {
+        int besti;
+        int bestj;
+        int bestsize;
+    };
+
+    template<typename Vector>
+    void print_vector(Vector v)
+    {
+       std::cout << '{';
+       for(auto& p: v)
+            std::cout << *p << ' ';
+       std::cout << "}\n";
+    }
+
+    template<typename Map>
+    void print_map(Map& m)
+    {
+       std::cout << '{';
+       for(auto& p: m) 
+       {
+            std::cout << p.first << ': ';
+            print_vector(p.second);
+       }
+       std::cout << " }\n";
+    }
+
+    
 
 	class SequenceMatcher
 	{
@@ -23,7 +54,7 @@ namespace difflib{
 		void SetSeq2(std::string b);
 
 		// Find longest matching block in a[alow:ahigh] and b[blow:bhigh].
-		void FindLongestMatch(int alow, int ahigh, int blow, int bhigh);
+		Match FindLongestMatch(int alow, int ahigh, int blow, int bhigh);
 
 		// Return list of triples describing matching subsequences.
 		void GetMatchingBlocks();
@@ -54,6 +85,7 @@ namespace difflib{
 		std::string _a; // first sequence
 		std::string _b; // second sequence; differences are computed as 
 		                // "what do we need to do to 'a' to change it into 'b' ? "
+        std::map<char, std::vector<int>> b2j;
 	};
 
 }
