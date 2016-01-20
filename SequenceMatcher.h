@@ -6,6 +6,9 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <queue>
+#include <tuple>
+#include <algorithm>
 
 namespace difflib{
 
@@ -14,6 +17,15 @@ namespace difflib{
         int bestj;
         int bestsize;
     };
+
+    struct QueryRange {
+        int alow;
+        int ahigh;
+        int blow;
+        int bhigh;
+    };
+
+    
 
     template<typename Vector>
     void print_vector(Vector v)
@@ -32,7 +44,7 @@ namespace difflib{
        {
             std::cout << p.first << ':' << p.second << ' ';
        }
-       std::cout << " }\n";
+       std::cout << "}\n";
     }
 
     
@@ -56,7 +68,7 @@ namespace difflib{
 		Match FindLongestMatch(int alow, int ahigh, int blow, int bhigh);
 
 		// Return list of triples describing matching subsequences.
-		void GetMatchingBlocks();
+		std::vector<Match> GetMatchingBlocks();
 
 		// Return list of 5-tuples describing how to turn a into b.
 		void GetOpcodes();
@@ -76,7 +88,7 @@ namespace difflib{
 	private:
 		void ChainB();
 		void CountLeading(const std::string line, const char ch);
-
+        static bool MatchCompare(Match a, Match b);
 		// 
 		float CalculateRatio(int matches, int length);
 
@@ -85,6 +97,7 @@ namespace difflib{
 		std::string _b; // second sequence; differences are computed as 
 		                // "what do we need to do to 'a' to change it into 'b' ? "
         std::map<char, std::vector<int>> b2j;
+        std::vector<Match> matchingBlocks;
 	};
 
 }
