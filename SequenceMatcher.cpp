@@ -159,4 +159,42 @@ namespace difflib{
         if (a.bestsize != b.bestsize) return (a.bestsize < b.bestsize);
         return true;
     }
+
+    std::vector<Opcode> SequenceMatcher::GetOpcodes()
+    {
+        if (opcodes.size() > 0)
+            return opcodes;
+        int i = 0, j = 0;
+        for (auto& match : GetMatchingBlocks())
+        {
+            std::string tag = "";
+            if (i < match.besti && j < match.bestj)
+            {
+                tag = "replace";
+            }
+            else if ( i < match.besti)
+            {
+                tag = "delete";
+            }
+            else if (j < match.bestj)
+            {
+                tag = "insert";
+            }
+            else {}
+            
+            if (tag.size() > 0)
+            {
+                Opcode op = {tag, i, match.besti, j, match.bestj};
+                opcodes.push_back(op);
+            }
+            i = match.besti + match.bestsize;
+            j = match.bestj + match.bestsize;
+            if (match.bestsize)
+            {
+                Opcode op = {"equal", match.besti, i, match.bestj, j};
+                opcodes.push_back(op);
+            }
+        }
+        return opcodes;
+    }
 }

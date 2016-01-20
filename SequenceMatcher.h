@@ -25,7 +25,13 @@ namespace difflib{
         int bhigh;
     };
 
-    
+    struct Opcode {
+        std::string tag;
+        int a1;
+        int a2;
+        int b1;
+        int b2;
+    };
 
     template<typename Vector>
     void print_vector(Vector v)
@@ -71,7 +77,7 @@ namespace difflib{
 		std::vector<Match> GetMatchingBlocks();
 
 		// Return list of 5-tuples describing how to turn a into b.
-		void GetOpcodes();
+        std::vector<Opcode> GetOpcodes();
 		void GetGroupedOpcodes(int n = 3);
 
 		// Return a measure of the sequences' similarity (float in [0,1]).
@@ -98,6 +104,7 @@ namespace difflib{
 		                // "what do we need to do to 'a' to change it into 'b' ? "
         std::map<char, std::vector<int>> b2j;
         std::vector<Match> matchingBlocks;
+        std::vector<Opcode> opcodes;
 	};
 
 }
