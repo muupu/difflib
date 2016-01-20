@@ -30,8 +30,7 @@ namespace difflib{
        std::cout << '{';
        for(auto& p: m) 
        {
-            std::cout << p.first << ': ';
-            print_vector(p.second);
+            std::cout << p.first << ':' << p.second << ' ';
        }
        std::cout << " }\n";
     }
