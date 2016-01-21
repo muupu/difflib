@@ -277,7 +277,7 @@ namespace difflib{
         }
 
         // Return a measure of the sequences' similarity (float in [0,1]).
-        float Ratio()
+        double Ratio()
         {
             int matches = 0;
             for (auto match : GetMatchingBlocks())
@@ -290,11 +290,36 @@ namespace difflib{
         // Return an upper bound on .ratio() relatively quickly.
         float QuickRatio()
         {
-
+            // if (fullbcount.size)
+            for (auto iter = _b.begin(); iter != _b.end(); ++iter)
+            {
+                fullbcount[*iter] = fullbcount[*iter] + 1;
+            }
+            std::map<ElementT, int> avail;
+            int matches = 0;
+            for (auto iter = _a.begin(); iter != _a.end(); ++iter)
+            {
+                int numb = 0;
+                if (avail[*iter])
+                {
+                    numb = avail[*iter];
+                }
+                else
+                {
+                    numb = fullbcount[*iter];
+                }
+                avail[*iter] = numb - 1;
+                if (numb > 0)
+                {
+                    matches = matches + 1;
+                }
+                    
+            }
+            return CalculateRatio(matches, _a.size() + _b.size());
         }
 
         // Return an upper bound on ratio() very quickly.
-        float RealQuickRatio()
+        double RealQuickRatio()
         {
             return CalculateRatio(std::min(_a.size(), _b.size()), _a.size() + _b.size());
         }
@@ -336,7 +361,7 @@ namespace difflib{
         }
 
 
-		float CalculateRatio(int matches, int length)
+		double CalculateRatio(int matches, int length)
         {
             if (length > 0)
                 return 2.0 * matches / length;
@@ -349,6 +374,7 @@ namespace difflib{
 		ContainerT _a; // first sequence
 		ContainerT _b; // second sequence
         std::map<ElementT, std::vector<int>> b2j;
+        std::map<ElementT, int> fullbcount;
         std::vector<Match> matchingBlocks;
         std::vector<Opcode> opcodes;
 	};
