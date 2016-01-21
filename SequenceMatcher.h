@@ -187,7 +187,7 @@ namespace difflib{
             return matchingBlocks;
         }
 
-		// Return list of 5-tuples describing how to turn a into b.
+        // Return list of 5-tuples describing how to turn a into b.
         std::vector<Opcode> GetOpcodes()
         {
             if (opcodes.size() > 0)
@@ -225,18 +225,68 @@ namespace difflib{
             }
             return opcodes;
         }
-		void GetGroupedOpcodes(int n = 3);
 
-		// Return a measure of the sequences' similarity (float in [0,1]).
-		float Ratio();
+        std::vector<std::vector<Opcode>> GetGroupedOpcodes(int n = 3)
+        {
+            auto codes = GetOpcodes();
+            if (codes.size() == 0)
+            {
+                Opcode op = {"equal", 0, 1, 0, 1};
+                codes = std::vector<Opcode>(); 
+                codes.push_back(op);
+            }
+            if (codes[0].tag == "equal")
+            {
+                int i1 = codes[0].a1;
+                int i2 = codes[0].a2;
+                int j1 = codes[0].b1;
+                int j2 = codes[0].b2;
+                codes[0].a1 = std::max(i1, i2 - n);
+                codes[0].b1 = std::max(j1, j2 - n);
+            }
+            auto& lastCode = codes[codes.size() - 1];
+            if (lastCode.tag == "equal")
+            {
+                int i1 = lastCode.a1;
+                int i2 = lastCode.a2;
+                int j1 = lastCode.b1;
+                int j2 = lastCode.b2;
+                lastCode.a2 = std::min(i2, i1 + n);
+                lastCode.b2 = std::min(j2, j1 + n);
+            }
+            int nn = n + n;
+            std::vector<Opcode> group;
+            std::vector<std::vector<Opcode>> groups;
+            for (auto code : codes)
+            {
+                if (code.tag == "equal" && (code.a2 - code.a1) > nn)
+                {
+                    Opcode op = {code.tag, code.a1, std::min(code.a2, code.a1 + n), code.b1, std::min(code.b2, code.b1 + n)};
+                    group.push_back(op);
+                    groups.push_back(group);
+                    group.clear();
+                    code.a1 = std::max(code.a1, code.a2 - n);
+                    code.b1 = std::max(code.b1, code.b2 - n);
+                }
+                group.push_back(code);
+            }
+            if (group.size() > 0 && !(group.size() == 1 && group[0].tag == "equal"))
+            {
+                groups.push_back(group);
+            }
+            return groups;
+        }
 
-		// Return an upper bound on .ratio() relatively quickly.
-		float QuickRatio();
+        // Return a measure of the sequences' similarity (float in [0,1]).
+        float Ratio();
 
-		// Return an upper bound on ratio() very quickly.
-		float RealQuickRatio();
+        // Return an upper bound on .ratio() relatively quickly.
+        float QuickRatio();
 
-		void GetCloseMatches();
+        // Return an upper bound on ratio() very quickly.
+        float RealQuickRatio();
+
+        void GetCloseMatches();
 
 	private:
 		void ChainB()
