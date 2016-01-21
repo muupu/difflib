@@ -94,6 +94,14 @@ void test_GetGroupedOpcodes()
     }
 }
 
+void test_ratio()
+{
+    difflib::SequenceMatcher<std::string> sm("abcd", "bcde");
+    std::cout<< sm.Ratio() << std::endl;
+    std::cout<< sm.QuickRatio() << std::endl;
+    std::cout<< sm.RealQuickRatio() << std::endl;
+}
+
 int main()
 {
     /* 暂不支持list容器（无法使用operator[]）
@@ -103,7 +111,8 @@ int main()
 
     // test_FindLongestMatch();
     // test_GetOpcodes();
-    test_GetGroupedOpcodes();
+    //test_GetGroupedOpcodes();
+    test_ratio();
 
     return 0;
 }
