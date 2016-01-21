@@ -278,13 +278,27 @@ namespace difflib{
         }
 
         // Return a measure of the sequences' similarity (float in [0,1]).
-        float Ratio();
+        float Ratio()
+        {
+            int matches = 0;
+            for (auto match : GetMatchingBlocks())
+            {
+                matches += match.bestsize;
+            }
+            return CalculateRatio(matches, _a.size() + _b.size());
+        }
 
         // Return an upper bound on .ratio() relatively quickly.
-        float QuickRatio();
+        float QuickRatio()
+        {
+
+        }
 
         // Return an upper bound on ratio() very quickly.
-        float RealQuickRatio();
+        float RealQuickRatio()
+        {
+            return CalculateRatio(std::min(_a.size(), _b.size()), _a.size() + _b.size());
+        }
 
         void GetCloseMatches();
 
@@ -323,7 +337,13 @@ namespace difflib{
         }
 
 
-		float CalculateRatio(int matches, int length);
+		float CalculateRatio(int matches, int length)
+        {
+            if (length > 0)
+                return 2.0 * matches / length;
+            return 1.0;
+        }
+
 
 	private:
         typedef typename ContainerT::value_type ElementT; // element type of ContainerT
