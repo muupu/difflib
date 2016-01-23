@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
-#include "SequenceMatcher.h"
 #include <list>
+#include "SequenceMatcher.h"
+#include "Differ.h"
 
 void test_FindLongestMatch()
 {
@@ -102,6 +103,20 @@ void test_ratio()
     std::cout<< sm.RealQuickRatio() << std::endl;
 }
 
+void test_Differ()
+{
+	std::string arra[] = { "one\n", "two\n", "three\n" };
+	std::string arrb[] = { "ore\n", "tree\n", "emu\n" };
+	std::vector<string> alines(arra, arra + 3);
+	std::vector<string> blines(arrb, arrb + 3);
+	difflib::Differ differ;
+	auto diffs = differ.Compare(alines, blines);
+	for (auto diff : diffs)
+	{
+		std::cout << diff << std::endl;
+	}
+}
+
 int main()
 {
     /* 暂不支持list容器（无法使用operator[]）
@@ -112,7 +127,8 @@ int main()
     // test_FindLongestMatch();
     // test_GetOpcodes();
     //test_GetGroupedOpcodes();
-    test_ratio();
+    // test_ratio();
+	test_Differ();
 
     return 0;
 }
