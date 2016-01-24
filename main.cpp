@@ -97,7 +97,12 @@ void test_GetGroupedOpcodes()
 
 void test_ratio()
 {
-    difflib::SequenceMatcher<std::string> sm("abcd", "bcde");
+	std::string arra[] = { "one\n", "two\n", "three\n", "four\n" };
+	std::string arrb[] = { "one\n", "tree\n", "emu\n", "three\n", "four\n" };
+	std::vector<string> alines(arra, arra + 4);
+	std::vector<string> blines(arrb, arrb + 5);
+
+	difflib::SequenceMatcher<std::vector<string>> sm(alines, blines);
     std::cout<< sm.Ratio() << std::endl;
     std::cout<< sm.QuickRatio() << std::endl;
     std::cout<< sm.RealQuickRatio() << std::endl;
@@ -127,8 +132,8 @@ int main()
     // test_FindLongestMatch();
     // test_GetOpcodes();
     //test_GetGroupedOpcodes();
-    // test_ratio();
-	test_Differ();
+    test_ratio();
+	// test_Differ();
 
     return 0;
 }
