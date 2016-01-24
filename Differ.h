@@ -12,8 +12,14 @@ namespace difflib{
 	class Differ
 	{
 	public:
-		Differ();
-		~Differ();
+		Differ()
+		{
+
+		}
+		~Differ()
+		{
+
+		}
 
 		vector<string> Compare(vector<string> alines, vector<string> blines)
 		{
@@ -89,7 +95,15 @@ namespace difflib{
 
 		vector<string> FancyReplace(vector<string> alines, int alow, int ahigh, vector<string> blines, int blow, int bhigh)
 		{
+			double best_ratio = 0.74;
+			double cutoff = 0.75;
+			SequenceMatcher<vector<string>> cruncher;
+			int eqi;
+			int eqj;
 
+
+			vector<string> a;
+			return a;
 		}
 		void FancyHelper(vector<string> alines, int alow, int ahigh, vector<string> blines, int blow, int bhigh);
 		void Qformat(string aline, string bline, string atags, string btags);
