@@ -57,7 +57,10 @@ namespace difflib{
 	class SequenceMatcher
 	{
 	public:
-        
+		SequenceMatcher()
+		{
+		}
+
 		SequenceMatcher(const ContainerT &a, const ContainerT &b)
         {
             SetSeqs(a, b);
@@ -288,7 +291,7 @@ namespace difflib{
         }
 
         // Return an upper bound on .ratio() relatively quickly.
-        float QuickRatio()
+		double QuickRatio()
         {
             // if (fullbcount.size)
             for (auto iter = _b.begin(); iter != _b.end(); ++iter)
