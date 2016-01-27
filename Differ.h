@@ -97,12 +97,27 @@ namespace difflib{
 		{
 			double best_ratio = 0.74;
 			double cutoff = 0.75;
-			SequenceMatcher<vector<string>> cruncher;
-			int eqi;
-			int eqj;
+			SequenceMatcher<string> cruncher;
+			int eqi = -1;
+			int eqj = -1;
 			for (int j = blow; j < bhigh; j++)
 			{
-
+				string bj = blines[j];
+				cruncher.SetSeq2(bj);
+				for (int i = alow; i < ahigh; i++)
+				{
+					string ai = alines[i];
+					if (ai == bj)
+					{
+						if (eqi == -1)
+						{
+							eqi = i;
+							eqj = j;
+						}
+						continue;
+					}
+					cruncher.SetSeq1(ai);
+				}
 			}
 
 			vector<string> a;
