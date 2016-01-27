@@ -100,13 +100,23 @@ namespace difflib{
 			SequenceMatcher<vector<string>> cruncher;
 			int eqi;
 			int eqj;
+			for (int j = blow; j < bhigh; j++)
+			{
 
+			}
 
 			vector<string> a;
 			return a;
 		}
-		void FancyHelper(vector<string> alines, int alow, int ahigh, vector<string> blines, int blow, int bhigh);
-		void Qformat(string aline, string bline, string atags, string btags);
+		void FancyHelper(vector<string> alines, int alow, int ahigh, vector<string> blines, int blow, int bhigh)
+		{
+
+		}
+
+		void Qformat(string aline, string bline, string atags, string btags)
+		{
+
+		}
 
 	private:
 		vector<string> _alines;
