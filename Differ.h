@@ -142,15 +142,15 @@ namespace difflib{
 						continue;
 					}
 					cruncher.SetSeq1(ai);
+                    if (cruncher.RealQuickRatio() > bestratio 
+                        && cruncher.QuickRatio() > bestratio
+                        && cruncher.Ratio() > bestratio)
+                    {
+                        bestratio = cruncher.Ratio();
+                        besti = i;
+                        bestj = j;
+                    }
 				}
-                if (cruncher.RealQuickRatio() > bestratio 
-                    && cruncher.QuickRatio() > bestratio
-                    && cruncher.Ratio() > bestratio)
-                {
-                    bestratio = cruncher.Ratio();
-                    besti = i;
-                    bestj = j;
-                }
 			}
             if (bestratio < cutoff)
             {
