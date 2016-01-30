@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "SequenceMatcher.h"
 
 using namespace std;
@@ -48,6 +49,7 @@ namespace difflib{
 			vector<string> lines;
 			for (auto op : cruncher.GetOpcodes())
 			{
+                cout << "tag, alo, ahi, blo, bhi:"<< op.tag << ", "<< op.a1 << ", " << op.a2 << ", " <<  op.b1 << ", " <<  op.b2 << endl;
 				vector<string> g;
 				if (op.tag == "replace")
 				{
@@ -71,6 +73,7 @@ namespace difflib{
 				}
 				for (auto line : g)
 				{
+                    cout << "line: " << line << endl;
 					lines.push_back(line);
 				}
 			}
@@ -127,21 +130,27 @@ namespace difflib{
             int i, j;
 			for (j = blow; j < bhigh; j++)
 			{
+                cout << "j: " << j << endl; 
 				string bj = blines[j];
+                cout << "bj: " << bj << endl; 
 				cruncher.SetSeq2(bj);
 				for (i = alow; i < ahigh; i++)
 				{
+                    cout << "i: " << i << endl; 
 					string ai = alines[i];
+                    cout << "ai: " << ai << endl; 
 					if (ai == bj)
 					{
 						if (eqi == -1)
 						{
 							eqi = i;
 							eqj = j;
+                            cout << "eqi, eqj: " << eqi << " " << eqj << endl; 
 						}
 						continue;
 					}
 					cruncher.SetSeq1(ai);
+                    cout << "RealQuickRatio, QuickRatio, Ratio: " << cruncher.RealQuickRatio() << " " << cruncher.QuickRatio() << " " << cruncher.Ratio() << endl; 
                     if (cruncher.RealQuickRatio() > bestratio 
                         && cruncher.QuickRatio() > bestratio
                         && cruncher.Ratio() > bestratio)
@@ -149,6 +158,7 @@ namespace difflib{
                         bestratio = cruncher.Ratio();
                         besti = i;
                         bestj = j;
+                        cout << "best_ratio, best_i, best_j: " << bestratio << " " << besti << " " << bestj << endl; 
                     }
 				}
 			}
@@ -158,6 +168,7 @@ namespace difflib{
                 {
                     for(auto& line : PlainReplace(alines, alow, ahigh, blines, blow, bhigh))
                     {
+                        cout << "line: " << line << endl;
                         lines.push_back(line);
                     }
                     return lines;
@@ -165,6 +176,7 @@ namespace difflib{
                 besti = eqi;
                 besti = eqj;
                 bestratio = 1.0;
+                cout << "best_ratio, best_i, best_j: " << bestratio << " " << besti << " " << bestj << endl; 
             }
             else
             {
@@ -173,11 +185,13 @@ namespace difflib{
 
             for (auto& line : FancyHelper(alines, alow, besti, blines, blow, bestj))
             {
+                cout << "line: " << line << endl;
                 lines.push_back(line);
             }
 
             string aelt = alines[besti];
             string belt = blines[bestj];
+            cout << "aelt, belt: " << aelt << ", " << belt << endl; 
             if (eqi == -1)
             {
                 string atags = "";
@@ -185,8 +199,10 @@ namespace difflib{
                 cruncher.SetSeqs(aelt, belt);
                 for (auto op : cruncher.GetOpcodes())
                 {
+                    cout << "tag, alo, ahi, blo, bhi:"<< op.tag << ", "<< op.a1 << ", " << op.a2 << ", " <<  op.b1 << ", " <<  op.b2 << endl;
                     int la = op.a2 - op.a1;
                     int lb = op.b2 - op.b1;
+                    cout << "la, lb: " << la << ", " << lb << endl; 
                     if (op.tag == "replace")
                     {
                         for (int i = 0; i < la; i++) 
@@ -214,20 +230,28 @@ namespace difflib{
                     else
                     {
                     }
+                    cout << "atags: " << atags << endl;
+                    cout << "btags: " << btags << endl;
                 }
-
+                cout << "aelt: " << aelt << endl;
+                cout << "belt: " << belt << endl;
+                cout << "atags: " << atags << endl;
+                cout << "btags: " << btags << endl;
                 for (auto& line : Qformat(aelt, belt, atags, btags))
                 {
+                    cout << "line: " << line << endl;
                     lines.push_back(line);
                 }
             }
             else
             {
+                cout << "  " + aelt << endl;
                 lines.push_back("  " + aelt);
             }
 
             for (auto& line : FancyHelper(alines, besti + 1, ahigh, blines, bestj + 1, bhigh))
             {
+                cout << "line: " << line << endl;
                 lines.push_back(line);
             }
 			return lines;
