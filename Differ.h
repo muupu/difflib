@@ -20,6 +20,16 @@ namespace difflib{
         return i;
     }
 
+    // trim from end
+    inline string &rtrim(string &str) {
+        size_t endpos = str.find_last_not_of(" ");
+        if( string::npos != endpos )
+        {
+            str = str.substr( 0, endpos+1 );
+        }
+        return str;
+    }
+
 	class Differ
 	{
 	public:
@@ -247,7 +257,11 @@ namespace difflib{
 		vector<string> Qformat(string aline, string bline, string atags, string btags)
 		{
             vector<string> lines;
-
+            int common;
+            common = min(CountLeading(aline, '\t'), CountLeading(bline, '\t'));
+            common = min(common, CountLeading(atags.substr(0, common), ' '));
+            common = min(common, CountLeading(btags.substr(0, common), ' '));
+            atags = atags.substr(common, atags.size());
             return lines;
 		}
 
