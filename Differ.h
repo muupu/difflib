@@ -22,7 +22,7 @@ namespace difflib{
 
     // trim from end
     inline string &rtrim(string &str) {
-        size_t endpos = str.find_last_not_of(" ");
+        size_t endpos = str.find_last_not_of(' ');
         if( string::npos != endpos )
         {
             str = str.substr( 0, endpos+1 );
@@ -261,7 +261,27 @@ namespace difflib{
             common = min(CountLeading(aline, '\t'), CountLeading(bline, '\t'));
             common = min(common, CountLeading(atags.substr(0, common), ' '));
             common = min(common, CountLeading(btags.substr(0, common), ' '));
-            atags = atags.substr(common, atags.size());
+            atags = rtrim(atags.substr(common, atags.size()));
+            btags = rtrim(btags.substr(common, btags.size()));
+
+            lines.push_back("- " + aline);
+            if (atags.length() > 0)
+            {
+                string line = "? ";
+                for (int i = 0; i < common; i++) 
+                    line += "\t";
+                line = line + atags + "\n";
+                lines.push_back(line);
+            }
+            lines.push_back("+ " + bline);
+            if (btags.length() > 0)
+            {
+                string line = "? ";
+                for (int i = 0; i < common; i++) 
+                    line += "\t";
+                line = line + btags + "\n";
+                lines.push_back(line);
+            }
             return lines;
 		}
 
