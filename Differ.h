@@ -171,7 +171,7 @@ namespace difflib{
                 eqi = -1;
             }
 
-            for (auto& line : FancyHelper(alines, alow, ahigh, blines, blow, bhigh))
+            for (auto& line : FancyHelper(alines, alow, besti, blines, blow, bestj))
             {
                 lines.push_back(line);
             }
