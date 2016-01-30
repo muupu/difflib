@@ -138,7 +138,6 @@ namespace difflib{
 				{
                     cout << "i: " << i << endl; 
 					string ai = alines[i];
-                    cout << "ai: " << ai << endl; 
 					if (ai == bj)
 					{
 						if (eqi == -1)
@@ -150,6 +149,7 @@ namespace difflib{
 						continue;
 					}
 					cruncher.SetSeq1(ai);
+                    cout << "ai: " << ai << endl; 
                     cout << "RealQuickRatio, QuickRatio, Ratio: " << cruncher.RealQuickRatio() << " " << cruncher.QuickRatio() << " " << cruncher.Ratio() << endl; 
                     if (cruncher.RealQuickRatio() > bestratio 
                         && cruncher.QuickRatio() > bestratio

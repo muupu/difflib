@@ -115,7 +115,7 @@ void test_ratio2()
 	std::vector<string> alines(arra, arra + 4);
 	std::vector<string> blines(arrb, arrb + 5);*/
 
-	difflib::SequenceMatcher<string> sm("one\n", "tree\n");
+	difflib::SequenceMatcher<string> sm("three\n", "tree\n");
     std::cout<< sm.Ratio() << std::endl;
     std::cout<< sm.QuickRatio() << std::endl;
     std::cout<< sm.RealQuickRatio() << std::endl;
@@ -175,7 +175,7 @@ int main()
     // test_GetOpcodes();
     //test_GetGroupedOpcodes();
     //test_ratio();
-    test_ratio2();
+    //test_ratio2();
 	//test_Differ();
     //test_Differ_FancyReplace();
     //test_Differ_Qformat();
