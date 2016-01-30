@@ -9,7 +9,7 @@ using namespace std;
 
 namespace difflib{
 
-    int CountLeading(string line, char ch)
+    inline int _CountLeading(string line, char ch)
     {
         int i = 0;
         int len = line.length();
@@ -77,7 +77,7 @@ namespace difflib{
 			return lines;
 		}
 
-	private:
+	public:
 		vector<string> Dump(string tag, vector<string> x, int low, int high)
 		{
 			vector<string> g;
@@ -258,9 +258,9 @@ namespace difflib{
 		{
             vector<string> lines;
             int common;
-            common = min(CountLeading(aline, '\t'), CountLeading(bline, '\t'));
-            common = min(common, CountLeading(atags.substr(0, common), ' '));
-            common = min(common, CountLeading(btags.substr(0, common), ' '));
+            common = min(_CountLeading(aline, '\t'), _CountLeading(bline, '\t'));
+            common = min(common, _CountLeading(atags.substr(0, common), ' '));
+            common = min(common, _CountLeading(btags.substr(0, common), ' '));
             atags = rtrim(atags.substr(common, atags.size()));
             btags = rtrim(btags.substr(common, btags.size()));
 

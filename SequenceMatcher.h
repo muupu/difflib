@@ -353,8 +353,6 @@ namespace difflib{
             }
         }
 
-		void CountLeading(const std::string line, const char ch);
-
         static bool MatchCompare(Match a, Match b)
         {
             if (a.besti != b.besti) return (a.besti < b.besti);
