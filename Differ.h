@@ -183,32 +183,32 @@ namespace difflib{
                 string atags = "";
                 string btags = "";
                 cruncher.SetSeqs(aelt, belt);
-                for (auto& op : cruncher.GetOpcodes())
+                for (auto op : cruncher.GetOpcodes())
                 {
                     int la = op.a2 - op.a1;
                     int lb = op.b2 - op.b1;
                     if (op.tag == "replace")
                     {
-                        for (int i = 0; i <= la; i++) 
+                        for (int i = 0; i < la; i++) 
                             atags += "^";
-                        for (int i = 0; i <= lb; i++) 
+                        for (int i = 0; i < lb; i++) 
                             btags += "^";
                     }
                     else if (op.tag == "delete")
                     {
-                        for (int i = 0; i <= la; i++) 
+                        for (int i = 0; i < la; i++) 
                             atags += "-";
                     }
                     else if (op.tag == "insert")
                     {
-                        for (int i = 0; i <= lb; i++) 
+                        for (int i = 0; i < lb; i++) 
                             btags += "+";
                     }
                     else if (op.tag == "equal")
                     {
-                        for (int i = 0; i <= la; i++) 
+                        for (int i = 0; i < la; i++) 
                             atags += " ";
-                        for (int i = 0; i <= lb; i++) 
+                        for (int i = 0; i < lb; i++) 
                             btags += " ";
                     }
                     else
