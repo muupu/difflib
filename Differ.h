@@ -9,6 +9,17 @@ using namespace std;
 
 namespace difflib{
 
+    int CountLeading(string line, char ch)
+    {
+        int i = 0;
+        int len = line.length();
+        while (i < len && line[i] == ch)
+        {
+            i++;
+        }
+        return i;
+    }
+
 	class Differ
 	{
 	public:
@@ -103,11 +114,12 @@ namespace difflib{
             int besti = -1;
             int bestj = -1;
             vector<string> lines;
-			for (int j = blow; j < bhigh; j++)
+            int i, j;
+			for (j = blow; j < bhigh; j++)
 			{
 				string bj = blines[j];
 				cruncher.SetSeq2(bj);
-				for (int i = alow; i < ahigh; i++)
+				for (i = alow; i < ahigh; i++)
 				{
 					string ai = alines[i];
 					if (ai == bj)
@@ -234,7 +246,9 @@ namespace difflib{
 
 		vector<string> Qformat(string aline, string bline, string atags, string btags)
 		{
+            vector<string> lines;
 
+            return lines;
 		}
 
 	private:
