@@ -210,9 +210,26 @@ namespace difflib{
             }
 			return lines;
 		}
+
 		vector<string> FancyHelper(vector<string> alines, int alow, int ahigh, vector<string> blines, int blow, int bhigh)
 		{
-
+            vector<string> g;
+            if (alow < ahigh)
+            {
+                if (blow < bhigh)
+                {
+                    g = FancyReplace(alines, alow, ahigh, blines, blow, bhigh);
+                }
+                else
+                {
+                    g = Dump("-", alines, alow, ahigh);
+                }
+            }
+            else if (blow < bhigh)
+            {
+                g = Dump("+", blines, blow, bhigh);
+            }
+            return g;
 		}
 
 		vector<string> Qformat(string aline, string bline, string atags, string btags)
