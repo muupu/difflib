@@ -147,7 +147,8 @@ int main()
     // test_GetOpcodes();
     //test_GetGroupedOpcodes();
     //test_ratio();
-	test_Differ();
+	//test_Differ();
+    test_Differ_FancyReplace();
 
     return 0;
 }
