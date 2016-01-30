@@ -95,11 +95,14 @@ namespace difflib{
 
 		vector<string> FancyReplace(vector<string> alines, int alow, int ahigh, vector<string> blines, int blow, int bhigh)
 		{
-			double best_ratio = 0.74;
+			double bestratio = 0.74;
 			double cutoff = 0.75;
 			SequenceMatcher<string> cruncher;
 			int eqi = -1;
 			int eqj = -1;
+            int besti = -1;
+            int bestj = -1;
+            vector<string> lines;
 			for (int j = blow; j < bhigh; j++)
 			{
 				string bj = blines[j];
@@ -118,17 +121,101 @@ namespace difflib{
 					}
 					cruncher.SetSeq1(ai);
 				}
+                if (cruncher.RealQuickRatio() > bestratio 
+                    && cruncher.QuickRatio() > bestratio
+                    && cruncher.Ratio() > bestratio)
+                {
+                    bestratio = cruncher.Ratio();
+                    besti = i;
+                    bestj = j;
+                }
 			}
+            if (bestratio < cutoff)
+            {
+                if (eqi == -1)
+                {
+                    for(auto& line : PlainReplace(alines, alow, ahigh, blines, blow, bhigh))
+                    {
+                        lines.push_back(line);
+                    }
+                    return lines;
+                }
+                besti = eqi;
+                besti = eqj;
+                bestratio = 1.0;
+            }
+            else
+            {
+                eqi = -1;
+            }
 
-			vector<string> a;
-			return a;
+            for (auto& line : FancyHelper(alines, alow, ahigh, blines, blow, bhigh))
+            {
+                lines.push_back(line);
+            }
+
+            string aelt = alines[besti];
+            string belt = blines[bestj];
+            if (eqi == -1)
+            {
+                string atags = "";
+                string btags = "";
+                cruncher.SetSeqs(aelt, belt);
+                for (auto& op : cruncher.GetOpcodes())
+                {
+                    int la = op.a2 - op.a1;
+                    int lb = op.b2 - op.b1;
+                    if (op.tag == "replace")
+                    {
+                        for (int i = 0; i <= la; i++) 
+                            atags += "^";
+                        for (int i = 0; i <= lb; i++) 
+                            btags += "^";
+                    }
+                    else if (op.tag == "delete")
+                    {
+                        for (int i = 0; i <= la; i++) 
+                            atags += "-";
+                    }
+                    else if (op.tag == "insert")
+                    {
+                        for (int i = 0; i <= lb; i++) 
+                            btags += "+";
+                    }
+                    else if (op.tag == "equal")
+                    {
+                        for (int i = 0; i <= la; i++) 
+                            atags += " ";
+                        for (int i = 0; i <= lb; i++) 
+                            btags += " ";
+                    }
+                    else
+                    {
+                    }
+                }
+
+                for (auto& line : Qformat(aelt, belt, atags, btags))
+                {
+                    lines.push_back(line);
+                }
+            }
+            else
+            {
+                lines.push_back("  " + aelt);
+            }
+
+            for (auto& line : FancyHelper(alines, besti + 1, ahigh, blines, bestj + 1, bhigh))
+            {
+                lines.push_back(line);
+            }
+			return lines;
 		}
-		void FancyHelper(vector<string> alines, int alow, int ahigh, vector<string> blines, int blow, int bhigh)
+		vector<string> FancyHelper(vector<string> alines, int alow, int ahigh, vector<string> blines, int blow, int bhigh)
 		{
 
 		}
 
-		void Qformat(string aline, string bline, string atags, string btags)
+		vector<string> Qformat(string aline, string bline, string atags, string btags)
 		{
 
 		}
