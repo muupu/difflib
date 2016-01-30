@@ -122,6 +122,20 @@ void test_Differ()
 	}
 }
 
+void test_Differ_FancyReplace()
+{
+    std::string arra[] = { "abcDefghiJkl\n"};
+	std::string arrb[] = { "abcdefGhijkl\n"};
+	std::vector<string> alines(arra, arra + 1);
+	std::vector<string> blines(arrb, arrb + 1);
+	difflib::Differ differ;
+	auto diffs = differ.FancyReplace(alines, 0, 1, blines, 0, 1);
+	for (auto diff : diffs)
+	{
+		std::cout << diff << std::endl;
+	}
+}
+
 int main()
 {
     /* 暂不支持list容器（无法使用operator[]）
@@ -132,8 +146,8 @@ int main()
     // test_FindLongestMatch();
     // test_GetOpcodes();
     //test_GetGroupedOpcodes();
-    test_ratio();
-	// test_Differ();
+    //test_ratio();
+	test_Differ();
 
     return 0;
 }
