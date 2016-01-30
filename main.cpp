@@ -108,6 +108,19 @@ void test_ratio()
     std::cout<< sm.RealQuickRatio() << std::endl;
 }
 
+void test_ratio2()
+{
+	/*std::string arra[] = { "one\n", "two\n", "three\n", "four\n" };
+	std::string arrb[] = { "one\n", "tree\n", "emu\n", "three\n", "four\n" };
+	std::vector<string> alines(arra, arra + 4);
+	std::vector<string> blines(arrb, arrb + 5);*/
+
+	difflib::SequenceMatcher<string> sm("one\n", "tree\n");
+    std::cout<< sm.Ratio() << std::endl;
+    std::cout<< sm.QuickRatio() << std::endl;
+    std::cout<< sm.RealQuickRatio() << std::endl;
+}
+
 void test_Differ()
 {
 	std::string arra[] = { "one\n", "two\n", "three\n" };
@@ -136,6 +149,21 @@ void test_Differ_FancyReplace()
 	}
 }
 
+void test_Differ_Qformat()
+{
+    /*std::string arra[] = { "\tabcDefghiJkl\n"};
+	std::string arrb[] = { "abcdefGhijkl\n"};
+	std::vector<string> alines(arra, arra + 1);
+	std::vector<string> blines(arrb, arrb + 1);*/
+
+	difflib::Differ differ;
+	auto diffs = differ.Qformat("\tabcDefghiJkl\n", "\tabcdefGhijkl\n", "  ^ ^  ^      ", "  ^ ^  ^      ");
+	for (auto diff : diffs)
+	{
+		std::cout << diff << std::endl;
+	}
+}
+
 int main()
 {
     /* 暂不支持list容器（无法使用operator[]）
@@ -147,8 +175,10 @@ int main()
     // test_GetOpcodes();
     //test_GetGroupedOpcodes();
     //test_ratio();
+    test_ratio2();
 	//test_Differ();
-    test_Differ_FancyReplace();
+    //test_Differ_FancyReplace();
+    //test_Differ_Qformat();
 
     return 0;
 }
