@@ -83,6 +83,8 @@ namespace difflib{
             if (a == _a)
                 return;
             _a = a;
+			matchingBlocks.clear();
+			opcodes.clear();
         }
 
 		// Set the second sequence to be compared.
@@ -91,19 +93,24 @@ namespace difflib{
             if (b == _b)
                 return;
             _b = b;
+			matchingBlocks.clear();
+			opcodes.clear();
+			fullbcount.clear();
             ChainB();
         }
 
 		// Find longest matching block in a[alow:ahigh] and b[blow:bhigh].
 		Match FindLongestMatch(int alow, int ahigh, int blow, int bhigh)
         {
+			ContainerT a = _a;
+			ContainerT b = _b;
             Match bestMatch = {alow, blow, 0};
             std::map<int, int> j2len;
             for (int i = alow; i < ahigh; ++i)
             {
                 /*std::cout << "i:" << i << std::endl;*/
                 std::map<int, int> newj2len;
-                auto indices = b2j[_a[i]];
+                auto indices = b2j[a[i]];
                 for (auto& j : indices)
                 {
                     /*std::cout << "j:" << j << std::endl;*/
@@ -285,8 +292,11 @@ namespace difflib{
             int matches = 0;
             for (auto match : GetMatchingBlocks())
             {
+				cout << "match:" << match.besti << " " << match.bestj << " " << match.bestsize << endl;
                 matches += match.bestsize;
             }
+			//cout << "a, b:" << _a << " " << _b << endl;
+			cout << "len a, b:" << _a.size() << " " << _b.size() << endl;
             return CalculateRatio(matches, _a.size() + _b.size());
         }
 
@@ -294,6 +304,7 @@ namespace difflib{
 		double QuickRatio()
         {
             // if (fullbcount.size)
+			fullbcount.clear();
             for (auto iter = _b.begin(); iter != _b.end(); ++iter)
             {
                 fullbcount[*iter] = fullbcount[*iter] + 1;
@@ -333,6 +344,7 @@ namespace difflib{
 		void ChainB()
         {
             auto b = _b;
+			b2j.clear();
             for (auto iter = b.begin(); iter != b.end(); ++iter)
             {
                 b2j[*iter].push_back(iter-b.begin());
