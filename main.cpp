@@ -176,7 +176,7 @@ int main()
     //test_GetGroupedOpcodes();
     //test_ratio();
     //test_ratio2();
-	//test_Differ();
+	test_Differ();
     //test_Differ_FancyReplace();
     //test_Differ_Qformat();
 
