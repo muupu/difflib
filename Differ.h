@@ -22,12 +22,17 @@ namespace difflib{
     }
 
     // trim from end
-    inline string &rtrim(string &str) {
-        size_t endpos = str.find_last_not_of(' ');
-        if( string::npos != endpos )
+	inline std::string &rtrim(std::string &str) {
+		std::string whitespaces(" \t\f\v\n\r");
+		size_t found = str.find_last_not_of(whitespaces);
+		if (found != std::string::npos)
         {
-            str = str.substr( 0, endpos+1 );
+			str.erase(found + 1);
         }
+		else
+		{
+			str.clear(); // str is all whitespace
+		}
         return str;
     }
 
@@ -73,7 +78,7 @@ namespace difflib{
 				}
 				for (auto line : g)
 				{
-                    cout << "line: " << line << endl;
+                    cout << "line1: " << line << endl;
 					lines.push_back(line);
 				}
 			}
@@ -168,7 +173,7 @@ namespace difflib{
                 {
                     for(auto& line : PlainReplace(alines, alow, ahigh, blines, blow, bhigh))
                     {
-                        cout << "line: " << line << endl;
+                        cout << "line2: " << line << endl;
                         lines.push_back(line);
                     }
                     return lines;
@@ -185,7 +190,7 @@ namespace difflib{
 
             for (auto& line : FancyHelper(alines, alow, besti, blines, blow, bestj))
             {
-                cout << "line: " << line << endl;
+                cout << "line3: " << line << endl;
                 lines.push_back(line);
             }
 
@@ -237,9 +242,9 @@ namespace difflib{
                 cout << "belt: " << belt << endl;
                 cout << "atags: " << atags << endl;
                 cout << "btags: " << btags << endl;
-                for (auto& line : Qformat(aelt, belt, atags, btags))
+                for (auto line : Qformat(aelt, belt, atags, btags))
                 {
-                    cout << "line: " << line << endl;
+                    cout << "line4: " << line << endl;
                     lines.push_back(line);
                 }
             }
@@ -249,9 +254,9 @@ namespace difflib{
                 lines.push_back("  " + aelt);
             }
 
-            for (auto& line : FancyHelper(alines, besti + 1, ahigh, blines, bestj + 1, bhigh))
+            for (auto line : FancyHelper(alines, besti + 1, ahigh, blines, bestj + 1, bhigh))
             {
-                cout << "line: " << line << endl;
+                cout << "line5: " << line << endl;
                 lines.push_back(line);
             }
 			return lines;
@@ -283,10 +288,15 @@ namespace difflib{
             vector<string> lines;
             int common;
             common = min(_CountLeading(aline, '\t'), _CountLeading(bline, '\t'));
+			cout << "common:" << common << endl;
             common = min(common, _CountLeading(atags.substr(0, common), ' '));
+			cout << "common:" << common << endl;
             common = min(common, _CountLeading(btags.substr(0, common), ' '));
+			cout << "common:" << common << endl;
             atags = rtrim(atags.substr(common, atags.size()));
+			cout << "atags:" << atags << endl;
             btags = rtrim(btags.substr(common, btags.size()));
+			cout << "btags:" << btags << endl;
 
             lines.push_back("- " + aline);
             if (atags.length() > 0)
