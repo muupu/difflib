@@ -392,9 +392,30 @@ namespace difflib{
         std::vector<Opcode> opcodes;
 	};
 
-    inline void GetCloseMatches(std::string word, std::vector<std::string> possibilities, int n=3, double cutoff=0.6)
+    inline std::vector<std::string> GetCloseMatches(std::string word, std::vector<std::string> possibilities, int n=3, double cutoff=0.6)
     {
-
+        std::vector<std::string> closematches;
+        if (n > 0 && cutoff >= 0.0 && cutoff <= 1.0)
+        {
+            std::map<double, std::string> result;
+            SequenceMatcher<std::string> sm;
+            sm.SetSeq2(word);
+            for (auto poss : possibilities)
+            {
+                sm.SetSeq1(poss);
+                if (sm.RealQuickRatio() >= cutoff &&
+                    sm.QuickRatio() >= cutoff &&
+                    sm.Ratio() >= cutoff)
+                {
+                    result[sm.Ratio()] = poss;
+                }
+            }
+            for (auto r : result)
+            {
+                closematches.push_back(r.second);
+            }
+        }
+        return closematches;
     }
 
 }
