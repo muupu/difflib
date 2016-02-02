@@ -292,11 +292,11 @@ namespace difflib{
             int matches = 0;
             for (auto match : GetMatchingBlocks())
             {
-				cout << "match:" << match.besti << " " << match.bestj << " " << match.bestsize << endl;
+				std::cout << "match:" << match.besti << " " << match.bestj << " " << match.bestsize << std::endl;
                 matches += match.bestsize;
             }
 			//cout << "a, b:" << _a << " " << _b << endl;
-			cout << "len a, b:" << _a.size() << " " << _b.size() << endl;
+			std::cout << "len a, b:" << _a.size() << " " << _b.size() << std::endl;
             return CalculateRatio(matches, _a.size() + _b.size());
         }
 
@@ -410,9 +410,9 @@ namespace difflib{
                     result[sm.Ratio()] = poss;
                 }
             }
-            for (auto r : result)
+            for (auto rit = result.rbegin(); rit!=result.rend(); ++rit)
             {
-                closematches.push_back(r.second);
+                closematches.push_back(rit->second);
             }
         }
         return closematches;
