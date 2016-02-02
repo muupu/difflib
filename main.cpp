@@ -164,6 +164,17 @@ void test_Differ_Qformat()
 	}
 }
 
+void test_GetCloseMatches()
+{
+    std::string arr[] = { "ape", "apple", "peach", "puppy"};
+    std::vector<string> possibilities(arr, arr + 4);
+    auto cmes = difflib::GetCloseMatches("appel", possibilities);
+	for (auto cm : cmes)
+	{
+		std::cout << cm << std::endl;
+	}
+}
+
 int main()
 {
     /* 暂不支持list容器（无法使用operator[]）
@@ -176,9 +187,10 @@ int main()
     //test_GetGroupedOpcodes();
     //test_ratio();
     //test_ratio2();
-	test_Differ();
+	//test_Differ();
     //test_Differ_FancyReplace();
     //test_Differ_Qformat();
+    test_GetCloseMatches();
 
     return 0;
 }
