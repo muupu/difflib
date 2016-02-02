@@ -392,6 +392,11 @@ namespace difflib{
         std::vector<Opcode> opcodes;
 	};
 
+    inline void GetCloseMatches(std::string word, std::vector<std::string> possibilities, int n=3, double cutoff=0.6)
+    {
+
+    }
+
 }
 
 
